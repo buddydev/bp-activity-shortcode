@@ -4,7 +4,7 @@
  * Author: Brajesh Singh(BuddyDev)
  * Plugin URI: http://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: http://buddydev.com/members/sbrajesh/
- * Version: 1.0.1
+ * Version: 1.0.2
  * License: GPL
  */
 class BD_Activity_Stream_Shortcodes_Helper{
