@@ -25,7 +25,7 @@ class BD_Activity_Stream_Shortcodes_Helper{
     private function register_shortcodes() {
         //[activity-stream display_comments=threaded|none title=somethimg per_page=something]
         
-        add_shortcode('activity-stream', array($this,'generate_activity_stream'));
+        add_shortcode( 'activity-stream', array( $this, 'generate_activity_stream' ) );
      
                
 
@@ -38,7 +38,7 @@ class BD_Activity_Stream_Shortcodes_Helper{
      */
     public static function get_instance() {
 
-        if (!isset(self::$instance))
+        if ( !isset( self::$instance ) )
             self::$instance = new self();
 
         return self::$instance;
@@ -46,7 +46,7 @@ class BD_Activity_Stream_Shortcodes_Helper{
     
     
 
-    public function generate_activity_stream($atts, $content = null) {
+    public function generate_activity_stream( $atts, $content = null ) {
         //allow to use all those args awesome!
        $atts=shortcode_atts(array(
             'title'            => 'Latest Activity',//title of the section
@@ -71,17 +71,20 @@ class BD_Activity_Stream_Shortcodes_Helper{
             'secondary_id'     => false,    // secondary object ID to filter on e.g. a post_id
 
             // Searching
-            'search_terms'     => false         // specify terms to search on
-        ), $atts);
+            'search_terms'     => false,         // specify terms to search on
+            'use_compat'       => bp_use_theme_compat_with_current_theme() 
+        ), $atts );
        
-        extract($atts);
+        extract( $atts );
 	
       
         
         ob_start(); ?>
 	
-		
-		<?php if($title): ?>
+    <?php if( $use_compat):?>
+        <div id="buddypress">
+    <?php endif;?>		
+	<?php if($title): ?>
             <h3 class="activity-shortcode-title"><?php echo $title; ?></h3>
         <?php endif;?>    
 		
@@ -120,16 +123,20 @@ class BD_Activity_Stream_Shortcodes_Helper{
         <div id="message" class="info">
             <p><?php _e( 'Sorry, there was no activity found. Please try a different filter.', 'buddypress' ); ?></p>
         </div>
-
+            
+          
     <?php endif; ?>
-
+            
     <?php do_action( 'bp_after_activity_loop' ); ?>
 
     <form action="" name="activity-loop-form" id="activity-loop-form" method="post">
 
         <?php wp_nonce_field( 'activity_filter', '_wpnonce_activity_filter' ); ?>
 
-    </form>		
+    </form>
+     <?php if( $use_compat ):?>       
+        </div>
+     <?php endif;?>
     <?php 
 
 	$output = ob_get_clean();
