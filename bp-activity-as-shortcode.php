@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: BuddyPress Activity Shortcode
- * Author: Brajesh Singh(BuddyDev)
+ * Plugin Name: (BuddyDev) BuddyPress Activity Shortcode
+ * Author: Brajesh Singh(BuddyDev.Com)
  * Plugin URI: http://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: http://buddydev.com/members/sbrajesh/
- * Version: 1.0.2
+ * Version: 1.0.3
  * License: GPL
  */
 class BD_Activity_Stream_Shortcodes_Helper{
