@@ -77,8 +77,9 @@ class BD_Activity_Stream_Shortcodes_Helper{
         ), $atts );
        
         extract( $atts );
-	
-     
+	//hide on user activity, activity directory and group activity
+      if( function_exists('bp_is_activity_component') && bp_is_activity_component() || function_exists('bp_is_group_home') && bp_is_group_home() )
+		  return '';
         
         ob_start(); ?>
 	
