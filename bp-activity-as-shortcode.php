@@ -49,35 +49,36 @@ class BD_Activity_Stream_Shortcodes_Helper{
     public function generate_activity_stream( $atts, $content = null ) {
         //allow to use all those args awesome!
        $atts=shortcode_atts(array(
-            'title'            => 'Latest Activity',//title of the section
-            'pagination'       => 'true',//show or not
-            'display_comments' => 'threaded',
-            'include'          => false,     // pass an activity_id or string of IDs comma-separated
-            'exclude'          => false,     // pass an activity_id or string of IDs comma-separated
-            'in'               => false,     // comma-separated list or array of activity IDs among which to search
-            'sort'             => 'DESC',    // sort DESC or ASC
-            'page'             => 1,         // which page to load
-            'per_page'         => 5,         //how many per page
-            'max'              => false,     // max number to return
+            'title'				=> 'Latest Activity',//title of the section
+            'pagination'		=> 'true',//show or not
+            'display_comments'	=> 'threaded',
+            'include'			=> false,     // pass an activity_id or string of IDs comma-separated
+            'exclude'			=> false,     // pass an activity_id or string of IDs comma-separated
+            'in'				=> false,     // comma-separated list or array of activity IDs among which to search
+            'sort'				=> 'DESC',    // sort DESC or ASC
+            'page'				=> 1,         // which page to load
+            'per_page'			=> 5,         //how many per page
+            'max'				=> false,     // max number to return
 
             // Scope - pre-built activity filters for a user (friends/groups/favorites/mentions)
-            'scope'            => false,
+            'scope'				=> false,
 
             // Filtering
-            'user_id'          => false,    // user_id to filter on
-            'object'           => false,    // object to filter on e.g. groups, profile, status, friends
-            'action'           => false,    // action to filter on e.g. activity_update, new_forum_post, profile_updated
-            'primary_id'       => false,    // object ID to filter on e.g. a group_id or forum_id or blog_id etc.
-            'secondary_id'     => false,    // secondary object ID to filter on e.g. a post_id
+            'user_id'			=> false,    // user_id to filter on
+            'object'			=> false,    // object to filter on e.g. groups, profile, status, friends
+            'action'			=> false,    // action to filter on e.g. activity_update, new_forum_post, profile_updated
+            'primary_id'		=> false,    // object ID to filter on e.g. a group_id or forum_id or blog_id etc.
+            'secondary_id'		=> false,    // secondary object ID to filter on e.g. a post_id
 
             // Searching
-            'search_terms'     => false,         // specify terms to search on
-            'use_compat'       => bp_use_theme_compat_with_current_theme() 
+            'search_terms'		=> false,         // specify terms to search on
+            'use_compat'		=> bp_use_theme_compat_with_current_theme(),
+		   'allow_posting'		=> false,	//experimental, some of the themes may not support it.
         ), $atts );
        
         extract( $atts );
 	
-      
+     
         
         ob_start(); ?>
 	
@@ -89,7 +90,13 @@ class BD_Activity_Stream_Shortcodes_Helper{
         <?php endif;?>    
 		
         <?php do_action( 'bp_before_activity_loop' ); ?>
+			
+		<?php if ( $allow_posting && is_user_logged_in() ) : ?>
 
+			<?php bp_locate_template( array( 'activity/post-form.php'), true ); ?>
+
+		<?php endif; ?>
+			
         <?php if ( bp_has_activities($atts)  ) : ?>
             <div class="activity <?php if(!$display_comments): ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
 
