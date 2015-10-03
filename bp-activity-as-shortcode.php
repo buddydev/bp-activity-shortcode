@@ -4,7 +4,7 @@
  * Author: Brajesh Singh(BuddyDev.Com)
  * Plugin URI: http://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: http://buddydev.com/members/sbrajesh/
- * Version: 1.0.3
+ * Version: 1.0.4
  * License: GPL
  */
 class BD_Activity_Stream_Shortcodes_Helper{
@@ -59,7 +59,7 @@ class BD_Activity_Stream_Shortcodes_Helper{
             'page'				=> 1,         // which page to load
             'per_page'			=> 5,         //how many per page
             'max'				=> false,     // max number to return
-
+			'count_total'		=> true,
             // Scope - pre-built activity filters for a user (friends/groups/favorites/mentions)
             'scope'				=> false,
 
