@@ -1,9 +1,10 @@
 <?php
 /**
  * Plugin Name: BuddyPress Activity Shortcode
+ * Description: Embed activity stream in page/post using shortcode 
  * Author: Brajesh Singh(BuddyDev.Com)
  * Plugin URI: http://buddydev.com/plugins/bp-activity-shortcode/
- * Author URI: http://buddydev.com/members/sbrajesh/
+ * Author URI: http://buddydev.com/
  * Version: 1.0.5
  * License: GPL
  */
@@ -38,9 +39,10 @@ class BD_Activity_Stream_Shortcodes_Helper{
      */
     public static function get_instance() {
 
-        if ( !isset( self::$instance ) )
+        if ( ! isset( self::$instance ) ) {
             self::$instance = new self();
-
+		}
+		
         return self::$instance;
     }
     
@@ -48,7 +50,7 @@ class BD_Activity_Stream_Shortcodes_Helper{
 
     public function generate_activity_stream( $atts, $content = null ) {
         //allow to use all those args awesome!
-       $atts=shortcode_atts(array(
+       $atts = shortcode_atts( array(
             'title'				=> 'Latest Activity',//title of the section
             'pagination'		=> 'true',//show or not
             'display_comments'	=> 'threaded',
@@ -84,10 +86,11 @@ class BD_Activity_Stream_Shortcodes_Helper{
         
         ob_start(); ?>
 	
-    <?php if( $use_compat):?>
+    <?php if( $use_compat ):?>
         <div id="buddypress">
-    <?php endif;?>		
-	<?php if($title): ?>
+    <?php endif;?>	
+			
+	<?php if( $title ): ?>
             <h3 class="activity-shortcode-title"><?php echo $title; ?></h3>
         <?php endif;?>    
 		
@@ -100,7 +103,8 @@ class BD_Activity_Stream_Shortcodes_Helper{
 		<?php endif; ?>
 			
         <?php if ( bp_has_activities($atts)  ) : ?>
-            <div class="activity <?php if(!$display_comments): ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
+			
+            <div class="activity <?php if( ! $display_comments ): ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
 
                  <?php if ( empty( $_POST['page'] ) ) : ?>
 
@@ -118,7 +122,7 @@ class BD_Activity_Stream_Shortcodes_Helper{
                     </ul>
                  <?php endif; ?>
                 
-                <?php if($pagination):?>
+                <?php if( $pagination ):?>
                     <div class="pagination">
                         <div class="pag-count"><?php bp_activity_pagination_count(); ?></div>
                         <div class="pagination-links"><?php bp_activity_pagination_links(); ?></div>
@@ -143,9 +147,11 @@ class BD_Activity_Stream_Shortcodes_Helper{
         <?php wp_nonce_field( 'activity_filter', '_wpnonce_activity_filter' ); ?>
 
     </form>
+			
      <?php if( $use_compat ):?>       
         </div>
      <?php endif;?>
+
     <?php 
 
 	$output = ob_get_clean();

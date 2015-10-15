@@ -21,12 +21,12 @@ Features include:
  * List activities for a group
  * Allow users to post from the page( experimental, if does not work with your theme, please let us know)
  * All options supported by bp_has_activities are available
- * For details, please see [Documentation](http://buddydev.com/plugins/bp-activity-shortcode/, "Plugin page" )
+ * For details, please see [Documentation](http://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
 The simple way to use it is by including this shortcode
 
 [activity-stream ]
 
-Please make sure to check the usage instructions on the [BuddyPress Activity shortcode plugin page](http://buddydev.com/plugins/bp-activity-shortcode/, "Plugin page" )
+Please make sure to check the usage instructions on the [BuddyPress Activity shortcode plugin page](http://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
 
 Free & paid supports are available via [BuddyDev Support Forum](http://buddydev.com/support/forums/ "BuddyDev support forums")
 
