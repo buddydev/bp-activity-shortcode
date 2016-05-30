@@ -5,7 +5,7 @@
  * Author: Brajesh Singh(BuddyDev.Com)
  * Plugin URI: http://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: http://buddydev.com/
- * Version: 1.0.5
+ * Version: 1.0.6
  * License: GPL
  */
 class BD_Activity_Stream_Shortcodes_Helper{
@@ -52,7 +52,8 @@ class BD_Activity_Stream_Shortcodes_Helper{
         //allow to use all those args awesome!
        $atts = shortcode_atts( array(
             'title'				=> 'Latest Activity',//title of the section
-            'pagination'		=> 'true',//show or not
+            'pagination'		=> 1,//show or not
+            'load_more'         => 0,
             'display_comments'	=> 'threaded',
             'include'			=> false,     // pass an activity_id or string of IDs comma-separated
             'exclude'			=> false,     // pass an activity_id or string of IDs comma-separated
@@ -117,17 +118,24 @@ class BD_Activity_Stream_Shortcodes_Helper{
                     <?php bp_get_template_part( 'activity/entry'); ?>
 
                  <?php endwhile; ?>
+                <?php if ( $load_more && bp_activity_has_more_items() ) : ?>
 
+                    <li class="load-more">
+                        <a href="<?php bp_activity_load_more_link() ?>"><?php _e( 'Load More', 'buddypress' ); ?></a>
+                    </li>
+
+                <?php endif; ?>
                  <?php if ( empty( $_POST['page'] ) ) : ?>
                     </ul>
                  <?php endif; ?>
                 
-                <?php if( $pagination ):?>
+                <?php if ( $pagination && ! $load_more ):?>
                     <div class="pagination">
                         <div class="pag-count"><?php bp_activity_pagination_count(); ?></div>
                         <div class="pagination-links"><?php bp_activity_pagination_links(); ?></div>
                     </div>
                 <?php endif;?>
+
             </div>
 
 	
