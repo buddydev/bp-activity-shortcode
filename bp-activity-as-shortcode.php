@@ -121,7 +121,7 @@ class BD_Activity_Stream_Shortcodes_Helper {
 								</li>
 							<?php endif; ?>
 
-							<?php if ( empty( $_POST['page'] ) ) : ?>
+					<?php if ( empty( $_POST['page'] ) ) : ?>
 						</ul>
 					<?php endif; ?>
 
