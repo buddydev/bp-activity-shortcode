@@ -47,7 +47,11 @@ Otherwise, Use the Plugin browser, upload it and activate, you are done.
 Add the shortcode [activity-stream ] in your post or page. For detailed usage instruction, please visit plugin page on BuddyDev.
 
 
-== Changelog == 
+== Changelog ==
+
+= Version 1.0.7 =
+ * Updated code formatting
+
 = Version 1.0.5 =
  * Updated code
  * Added support for load more when no filters are used
