@@ -2,8 +2,8 @@
 Contributors: buddydev, sbrajesh, raviousprime
 Tags: buddypress, buddypress activity, sitewide activity, activity shortcode
 Requires at least: 4.0
-Tested up to: 4.6.1
-Stable tag: 1.0.7
+Tested up to: 4.7.0
+Stable tag: 1.0.8
 
 BuddyPress Activity shortcode plugin allows you to insert BuddyPress activity stream on any page/post using shortcode.
 
@@ -21,14 +21,14 @@ Features include:
  * List activities for a group
  * Allow users to post from the page( experimental, if does not work with your theme, please let us know)
  * All options supported by bp_has_activities are available
- * For details, please see [Documentation](http://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
+ * For details, please see [Documentation](https://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
 The simple way to use it is by including this shortcode
 
 [activity-stream ]
 
-Please make sure to check the usage instructions on the [BuddyPress Activity shortcode plugin page](http://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
+Please make sure to check the usage instructions on the [BuddyPress Activity shortcode plugin page](https://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
 
-Free & paid supports are available via [BuddyDev Support Forum](http://buddydev.com/support/forums/ "BuddyDev support forums")
+Free & paid supports are available via [BuddyDev Support Forum](https://buddydev.com/support/forums/ "BuddyDev support forums")
 
 == Installation ==
 
@@ -48,6 +48,11 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
+
+= Version 1.0.8 =
+ * Introduce option to display the activity shortcode contents even on activities page  using hide_on_activity=0
+ * Introduce container_class option to allow changing the shortcode output container class. It defaults to 'activity'.
+  If you have hide_on_activity=0, we suggest you to change it to something else to avoid the filtering of the content via js.
 
 = Version 1.0.7 =
  * Updated code
