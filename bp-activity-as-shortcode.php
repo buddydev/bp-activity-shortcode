@@ -77,16 +77,18 @@ class BD_Activity_Stream_Shortcodes_Helper {
 			'search_terms'     => false,         // specify terms to search on
 			'use_compat'       => bp_use_theme_compat_with_current_theme(),
 			'allow_posting'    => false,    //experimental, some of the themes may not support it.
+			'container_class'  => 'activity',//default container,
+			'hide_on_activity' => 1,//hide on user and group activity pages
 		), $atts );
 
 		//hide on user activity, activity directory and group activity
-		if ( is_user_logged_in() && ( function_exists( 'bp_is_activity_component' ) && bp_is_activity_component() ||
+		if ( $atts['hide_on_activity'] && ( function_exists( 'bp_is_activity_component' ) && bp_is_activity_component() ||
 		       function_exists( 'bp_is_group_home' ) && bp_is_group_home() ) ) {
 			return '';
 		}
 
+		//start buffering
 		ob_start();
-
 		?>
 
 		<?php if ( $atts['use_compat'] ) : ?>
@@ -105,7 +107,7 @@ class BD_Activity_Stream_Shortcodes_Helper {
 
 			<?php if ( bp_has_activities( $atts ) ) : ?>
 
-				<div class="activity <?php if ( ! $atts['display_comments'] ) : ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
+				<div class="<?php echo esc_attr( $atts['container_class'] ); ?> <?php if ( ! $atts['display_comments'] ) : ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
 
 					<?php if ( empty( $_POST['page'] ) ) : ?>
 						<ul id="activity-stream" class="activity-list item-list">
