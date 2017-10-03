@@ -10,20 +10,31 @@
  * License: GPL
  */
 
-// exit if access directly
+// exit if access directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Helper class.
+ */
 class BD_Activity_Stream_Shortcodes_Helper {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var BD_Activity_Stream_Shortcodes_Helper
+	 */
 	private static $instance;
 
+	/**
+	 * Constructor
+	 */
 	private function __construct() {
 		$this->register_shortcodes();
 	}
 
-	/*
+	/**
 	 * Register ShortCode
 	 *
 	 * @example [activity-stream display_comments=threaded|none title=somethimg per_page=something]
@@ -46,12 +57,20 @@ class BD_Activity_Stream_Shortcodes_Helper {
 		return self::$instance;
 	}
 
+	/**
+	 * Generate activity content.
+	 *
+	 * @param array  $atts shortcode atts.
+	 * @param string $content content.
+	 *
+	 * @return string
+	 */
 	public function generate_activity_stream( $atts, $content = null ) {
 
-		//allow to use all those args awesome!
+		// allow to use all those args awesome!
 		$atts = shortcode_atts( array(
-			'title'            => 'Latest Activity',//title of the section
-			'pagination'       => 1,//show or not
+			'title'            => 'Latest Activity',// title of the section.
+			'pagination'       => 1,// show or not.
 			'load_more'        => 0,
 			'display_comments' => 'threaded',
 			'include'          => false,     // pass an activity_id or string of IDs comma-separated
@@ -59,11 +78,11 @@ class BD_Activity_Stream_Shortcodes_Helper {
 			'in'               => false,     // comma-separated list or array of activity IDs among which to search
 			'sort'             => 'DESC',    // sort DESC or ASC
 			'page'             => 1,         // which page to load
-			'per_page'         => 5,         //how many per page
-			'max'              => false,     // max number to return
+			'per_page'         => 5,         // how many per page.
+			'max'              => false,     // max number to return.
 			'count_total'      => true,
 
-			// Scope - pre-built activity filters for a user (friends/groups/favorites/mentions)
+			// Scope - pre-built activity filters for a user (friends/groups/favorites/mentions).
 			'scope'            => false,
 
 			// Filtering
@@ -71,23 +90,23 @@ class BD_Activity_Stream_Shortcodes_Helper {
 			'object'           => false,    // object to filter on e.g. groups, profile, status, friends
 			'action'           => false,    // action to filter on e.g. activity_update, new_forum_post, profile_updated
 			'primary_id'       => false,    // object ID to filter on e.g. a group_id or forum_id or blog_id etc.
-			'secondary_id'     => false,    // secondary object ID to filter on e.g. a post_id
+			'secondary_id'     => false,    // secondary object ID to filter on e.g. a post_id.
 
 			// Searching
-			'search_terms'     => false,         // specify terms to search on
+			'search_terms'     => false,         // specify terms to search on.
 			'use_compat'       => bp_use_theme_compat_with_current_theme(),
-			'allow_posting'    => false,    //experimental, some of the themes may not support it.
-			'container_class'  => 'activity',//default container,
-			'hide_on_activity' => 1,//hide on user and group activity pages
+			'allow_posting'    => false,    // experimental, some of the themes may not support it.
+			'container_class'  => 'activity',// default container,
+			'hide_on_activity' => 1,// hide on user and group activity pages.
 		), $atts );
 
-		//hide on user activity, activity directory and group activity
+		// hide on user activity, activity directory and group activity.
 		if ( $atts['hide_on_activity'] && ( function_exists( 'bp_is_activity_component' ) && bp_is_activity_component() ||
 		       function_exists( 'bp_is_group_home' ) && bp_is_group_home() ) ) {
 			return '';
 		}
 
-		//start buffering
+		// start buffering.
 		ob_start();
 		?>
 
