@@ -67,6 +67,11 @@ class BD_Activity_Stream_Shortcodes_Helper {
 	 */
 	public function generate_activity_stream( $atts, $content = null ) {
 
+		// Hide if BuddyPress is not active.
+		if ( ! function_exists( 'buddypress' ) ) {
+			return '';
+		}
+
 		// allow to use all those args awesome!
 		$atts = shortcode_atts( array(
 			'title'            => 'Latest Activity',// title of the section.
@@ -98,12 +103,24 @@ class BD_Activity_Stream_Shortcodes_Helper {
 			'allow_posting'    => false,    // experimental, some of the themes may not support it.
 			'container_class'  => 'activity',// default container,
 			'hide_on_activity' => 1,// hide on user and group activity pages.
+            'for'              => '', // 'logged','displayed','author',
 		), $atts );
 
 		// hide on user activity, activity directory and group activity.
 		if ( $atts['hide_on_activity'] && ( function_exists( 'bp_is_activity_component' ) && bp_is_activity_component() ||
 		       function_exists( 'bp_is_group_home' ) && bp_is_group_home() ) ) {
 			return '';
+		}
+
+		$activity_for = $atts['for'];
+		if ( ! empty( $activity_for ) ) {
+
+			unset( $atts['for'] );
+			$atts['user_id'] = $this->get_user_id_for_context( $activity_for );
+
+			if ( empty( $atts['user_id'] ) ) {
+				return '';
+			}
 		}
 
 		// start buffering.
@@ -177,5 +194,40 @@ class BD_Activity_Stream_Shortcodes_Helper {
 
 		return $output;
 	}
+
+	/**
+	 * Get the user id for the givn context.
+	 *
+	 * @param string $context 'logged', 'displayed', 'author'.
+	 *
+	 * @return string
+	 */
+	private function get_user_id_for_context( $context ) {
+
+
+	    $user_id = false;
+		switch ( $context ) {
+
+			case 'logged':
+				$user_id = bp_loggedin_user_id();
+				break;
+
+			case 'displayed':
+				$user_id = bp_displayed_user_id();
+				break;
+
+			case 'author':
+				if ( is_singular() || in_the_loop() ) {
+					$user_id = get_the_author_meta( 'ID' );
+				} elseif ( is_author() ) {
+					$user_id = get_queried_object_id();
+				}
+
+				break;
+		}
+
+		return $user_id;
+	}
+
 }
 BD_Activity_Stream_Shortcodes_Helper::get_instance();
