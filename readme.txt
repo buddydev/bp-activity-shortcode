@@ -2,8 +2,8 @@
 Contributors: buddydev, sbrajesh, raviousprime
 Tags: buddypress, buddypress activity, sitewide activity, activity shortcode
 Requires at least: 4.0
-Tested up to: 4.7.0
-Stable tag: 1.0.8
+Tested up to: 4.8.2
+Stable tag: 1.0.9
 
 BuddyPress Activity shortcode plugin allows you to insert BuddyPress activity stream on any page/post using shortcode.
 
@@ -48,6 +48,13 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
+
+= Version 1.0.9 =
+ * Added option to list activity for Logged in user, Displayed user or post author.
+ * Use for="logged" to display activities for logged in user. Other valid values are "displayed", "author".
+ * for="displayed" lists activities for the displayed user(If you are on user profile section).
+ * If you use for="author" in a page/post, It will list activities for the post author on single post/inside the post loop and on author page.
+
 
 = Version 1.0.8 =
  * Introduce option to display the activity shortcode contents even on activities page  using hide_on_activity=0
