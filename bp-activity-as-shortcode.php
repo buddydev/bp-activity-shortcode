@@ -103,7 +103,8 @@ class BD_Activity_Stream_Shortcodes_Helper {
 			'allow_posting'    => false,    // experimental, some of the themes may not support it.
 			'container_class'  => 'activity',// default container,
 			'hide_on_activity' => 1,// hide on user and group activity pages.
-            'for'              => '', // 'logged','displayed','author',
+			'for'              => '', // 'logged','displayed','author'.
+			'role'             => '', // use one or more role here(e.g administrator,editor etc).
 		), $atts );
 
 		// hide on user activity, activity directory and group activity.
@@ -113,14 +114,20 @@ class BD_Activity_Stream_Shortcodes_Helper {
 		}
 
 		$activity_for = $atts['for'];
-		if ( ! empty( $activity_for ) ) {
 
+		if ( ! empty( $activity_for ) ) {
 			unset( $atts['for'] );
 			$atts['user_id'] = $this->get_user_id_for_context( $activity_for );
 
 			if ( empty( $atts['user_id'] ) ) {
 				return '';
 			}
+		}
+
+		// Fetch users for role and use their activity.
+		if ( ! empty( $atts['role'] ) ) {
+			$user_ids        = $this->get_user_ids_by_roles( $atts['role'] );
+			$atts['user_id'] = $user_ids;
 		}
 
 		// start buffering.
@@ -227,6 +234,42 @@ class BD_Activity_Stream_Shortcodes_Helper {
 		}
 
 		return $user_id;
+	}
+
+
+	/**
+	 * Get user ids belonging to a specific role.
+	 *
+	 * @param string|array $roles list of roles.
+	 *
+	 * @return array
+	 */
+	private function get_user_ids_by_roles( $roles ) {
+
+		$invalid_ids = array( 0, 0 );
+		if ( empty( $roles ) ) {
+			return $invalid_ids;// invalid ids.
+		}
+
+		if ( ! is_array( $roles ) ) {
+			$roles = explode( ',', $roles );
+		}
+
+		// trim space etc.
+		$roles = array_map( 'trim', $roles );
+
+		$user_query = new WP_User_Query( array(
+			'role__in' => $roles,
+			'fields'   => 'ID',
+		) );
+
+		$ids = $user_query->get_results();
+
+		if ( empty( $ids ) ) {
+			$ids = $invalid_ids;
+		}
+
+		return $ids;
 	}
 
 }
