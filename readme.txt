@@ -2,8 +2,8 @@
 Contributors: buddydev, sbrajesh, raviousprime
 Tags: buddypress, buddypress activity, sitewide activity, activity shortcode
 Requires at least: 4.0
-Tested up to: 4.8.2
-Stable tag: 1.0.9
+Tested up to: 4.8.3
+Stable tag: 1.1.0
 
 BuddyPress Activity shortcode plugin allows you to insert BuddyPress activity stream on any page/post using shortcode.
 
@@ -19,6 +19,7 @@ Features include:
  * List all activities
  * List activities for a user
  * List activities for a group
+ * List activities of specific user role.
  * Allow users to post from the page( experimental, if does not work with your theme, please let us know)
  * All options supported by bp_has_activities are available
  * For details, please see [Documentation](https://buddydev.com/plugins/bp-activity-shortcode/ "Plugin page" )
@@ -48,6 +49,11 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
+
+= Version 1.1.0 =
+ * Added option to filter activity based on roles.
+ * Use role='administrator' to list all activities of admin. You can use one or more role like role="administrator,editor"
+ * Thank you "Arik Twena" for sponsoring the development.
 
 = Version 1.0.9 =
  * Added option to list activity for Logged in user, Displayed user or post author.
