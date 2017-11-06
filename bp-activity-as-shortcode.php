@@ -6,7 +6,7 @@
  * Author: BuddyDev
  * Plugin URI: https://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: https://buddydev.com/
- * Version: 1.1.0
+ * Version: 1.1.1
  * License: GPL
  */
 
@@ -19,6 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Helper class.
  */
 class BD_Activity_Stream_Shortcodes_Helper {
+
+	/**
+	 * Keep track if currently inside shortcode content generation.
+	 *
+	 * @var bool
+	 */
+	private $doing_shortcode = false;
 
 	/**
 	 * Singleton instance.
@@ -130,8 +137,10 @@ class BD_Activity_Stream_Shortcodes_Helper {
 			$atts['user_id'] = $user_ids;
 		}
 
+		$this->doing_shortcode = true;
 		// start buffering.
 		ob_start();
+		do_action( 'bp_activity_stream_shortcode_before_generate_content', $atts );
 		?>
 
 		<?php if ( $atts['use_compat'] ) : ?>
@@ -199,7 +208,19 @@ class BD_Activity_Stream_Shortcodes_Helper {
 
 		$output = ob_get_clean();
 
+		$this->doing_shortcode = false;
+		do_action( 'bp_activity_stream_shortcode_after_generate_content', $atts );
+
 		return $output;
+	}
+
+	/**
+	 * Check if we doing shortcode?
+	 *
+	 * @return bool
+	 */
+	public function doing_shortcode() {
+		return $this->doing_shortcode;
 	}
 
 	/**
