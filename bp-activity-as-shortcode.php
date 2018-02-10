@@ -6,7 +6,7 @@
  * Author: BuddyDev
  * Plugin URI: https://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: https://buddydev.com/
- * Version: 1.1.1
+ * Version: 1.1.2
  * License: GPL
  */
 
@@ -134,6 +134,23 @@ class BD_Activity_Stream_Shortcodes_Helper {
 		// Fetch users for role and use their activity.
 		if ( ! empty( $atts['role'] ) ) {
 			$user_ids        = $this->get_user_ids_by_roles( $atts['role'] );
+			$atts['user_id'] = $user_ids;
+		} elseif ( ! empty( $atts['scope'] ) && 'following' === $atts['scope'] ) {
+		    // Compatibility for 1.2.2, Not needed when using the 1.3 branch of bp followers.
+			$user_id = $this->get_user_id_for_context( $activity_for );
+			if ( ! $user_id ) {
+				$user_id = get_current_user_id();
+			}
+
+			$user_ids = array();
+
+			if ( $user_id ) {
+				$user_ids = $this->get_following_user_ids( $user_id );
+			}
+
+			if ( empty( $user_ids ) ) {
+				$user_ids = array( 0, 0 );// invalid.
+			}
 			$atts['user_id'] = $user_ids;
 		}
 
@@ -291,6 +308,23 @@ class BD_Activity_Stream_Shortcodes_Helper {
 		}
 
 		return $ids;
+	}
+
+	/**
+	 * Get the ids of user followed by the $user_id.
+	 *
+	 * @param int $user_id user id.
+	 *
+	 * @return array
+	 */
+	private function get_following_user_ids( $user_id ) {
+		if ( ! function_exists( 'bp_follow_get_following' ) ) {
+			return array();
+		}
+
+		return bp_follow_get_following( array(
+			'user_id' => $user_id,
+		) );
 	}
 
 }
