@@ -8,7 +8,8 @@ jQuery(document).ready(function( $ ){
 
         $.post( ajaxurl, data, function(resp){
             if (resp.success ) {
-                $this.parent().html( resp.data );
+                $this.prevAll('li').remove();
+                $(resp.data).insertBefore( $this );
             }
         }, 'json' );
 
