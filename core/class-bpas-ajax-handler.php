@@ -26,18 +26,19 @@ class BPAS_Ajax_Handler {
 	 * Setup Callbacks
 	 */
 	public function setup() {
-		add_action( 'wp_ajax_bpas_get_activities', array( $this, 'get_activities' ) );
-		add_action( 'wp_ajax_nopriv_bpas_get_activities', array( $this, 'get_activities' ) );
+		add_action( 'wp_ajax_bpas_load_activities', array( $this, 'load_activities' ) );
+		add_action( 'wp_ajax_nopriv_bpas_load_activities', array( $this, 'load_activities' ) );
 	}
 
 	/**
 	 * Load activities
 	 */
-	public function get_activities() {
+	public function load_activities() {
 
-		check_ajax_referer( 'bpas_load_activity' );
+		check_ajax_referer( 'bpas_load_activities' );
 
 		unset( $_POST['_wpnonce'] );
+		unset( $_POST['action'] );
 
 		$args = wp_parse_args( $_POST, array(
 			'display_comments' => 'threaded',
@@ -62,13 +63,14 @@ class BPAS_Ajax_Handler {
 
 			// Searching
 			'search_terms'     => false,         // specify terms to search on.
-			'use_compat'       => bp_use_theme_compat_with_current_theme(),
-			'allow_posting'    => false,    // experimental, some of the themes may not support it.
-			'container_class'  => 'activity',// default container,
 			'hide_on_activity' => 1,// hide on user and group activity pages.
 			'for'              => '', // 'logged','displayed','author'.
 			'role'             => '', // use one or more role here(e.g administrator,editor etc).
 		) );
+
+		if ( ! empty( $_POST['bpas_action'] ) ) {
+			$args['action'] = $_POST['bpas_action'];
+		}
 
 		if ( bp_has_activities( $args ) ) {
 

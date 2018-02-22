@@ -199,7 +199,27 @@ class BPAS_ShortCode_Helper {
 				<?php endif; ?>
 
 				<form name="bpas-activities-args">
+					<input type="hidden" name="display_comments" value="<?php echo esc_attr($atts['display_comments']) ?>">
+					<input type="hidden" name="include" value="<?php echo esc_attr($atts['include']) ?>">
+					<input type="hidden" name="exclude" value="<?php echo esc_attr($atts['exclude']) ?>">
+					<input type="hidden" name="in" value="<?php echo esc_attr($atts['in']) ?>">
+					<input type="hidden" name="sort" value="<?php echo esc_attr($atts['sort']) ?>">
+					<input type="hidden" name="page" value="<?php echo esc_attr( $atts['page'] + 1  ) ?>">
+					<input type="hidden" name="per_page" value="<?php echo esc_attr($atts['per_page']) ?>">
+					<input type="hidden" name="max" value="<?php echo esc_attr($atts['max']) ?>">
+					<input type="hidden" name="count_total" value="<?php echo esc_attr($atts['count_total']) ?>">
+					<input type="hidden" name="scope" value="<?php echo esc_attr($atts['scope']) ?>">
 
+					<input type="hidden" name="user_id" value="<?php echo esc_attr($atts['user_id']) ?>">
+					<input type="hidden" name="object" value="<?php echo esc_attr($atts['object']) ?>">
+					<input type="hidden" name="bpas_action" value="<?php echo esc_attr($atts['action']) ?>">
+					<input type="hidden" name="primary_id" value="<?php echo esc_attr($atts['primary_id']) ?>">
+					<input type="hidden" name="secondary_id" value="<?php echo esc_attr($atts['secondary_id']) ?>">
+					<input type="hidden" name="search_terms" value="<?php echo esc_attr($atts['search_terms']) ?>">
+					<input type="hidden" name="for" value="<?php echo esc_attr($atts['for']) ?>">
+					<input type="hidden" name="role" value="<?php echo esc_attr($atts['role']) ?>">
+					<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'bpas_load_activities' )?>">
+					<!--<input type="hidden" name="action" value="bpas_load_activities">-->
 				</form>
 
 			</div>
