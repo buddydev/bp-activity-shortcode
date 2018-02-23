@@ -5,7 +5,7 @@
  * @package bp-activity-shortcode
  */
 
-// Exit if access directly over web
+// Exit if accessed directly over web.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -39,6 +39,11 @@ class BPAS_Ajax_Handler {
 
 		unset( $_POST['_wpnonce'] );
 		unset( $_POST['action'] );
+
+		//unset( $_POST['user_id'] );
+
+		// we do not allow tinkering with hide_sitewide while loading via ajax.
+		unset( $_POST['hide_sitewide'] );
 
 		$args = wp_parse_args( $_POST, array(
 			'display_comments' => 'threaded',
@@ -78,10 +83,19 @@ class BPAS_Ajax_Handler {
 
 		?>
 			<?php while ( bp_activities() ) : bp_the_activity(); ?>
-				<?php bp_get_template_part( 'activity/entry' ); ?>
-			<?php endwhile; ?>
-		<?php
 
+				<?php bp_get_template_part( 'activity/entry' ); ?>
+
+			<?php endwhile; ?>
+
+			<?php if ( bp_activity_has_more_items() ) : ?>
+
+				<li class="load-more">
+					<a href="#more"><?php _e( 'Load More', 'bp-magic' ); ?></a>
+				</li>
+
+			<?php endif; ?>
+		<?php
 			$content = ob_get_clean();
 
 			wp_send_json_success( $content );

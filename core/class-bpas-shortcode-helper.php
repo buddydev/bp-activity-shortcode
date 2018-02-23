@@ -5,7 +5,7 @@
  * @package bp-activity-shortcode
  */
 
-// Exit if access directly over web
+// Exit if accessed directly over web.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -110,8 +110,12 @@ class BPAS_ShortCode_Helper {
 		), $atts );
 
 		// hide on user activity, activity directory and group activity.
-		if ( $atts['hide_on_activity'] && ( function_exists( 'bp_is_activity_component' ) && bp_is_activity_component() ||
-		                                    function_exists( 'bp_is_group_home' ) && bp_is_group_home() ) ) {
+		if ( $atts['hide_on_activity'] &&
+		     ( function_exists( 'bp_is_activity_component' ) &&
+		       bp_is_activity_component() ||
+		       function_exists( 'bp_is_group_home' ) &&
+		       bp_is_group_home() )
+		) {
 			return '';
 		}
 
@@ -171,64 +175,62 @@ class BPAS_ShortCode_Helper {
 
 		<?php if ( bp_has_activities( $atts ) ) : ?>
 
-			<div class="bpas-shortcode-activities <?php echo esc_attr( $atts['container_class'] ); ?> <?php if ( ! $atts['display_comments'] ) : ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
+            <div class="bpas-shortcode-activities <?php echo esc_attr( $atts['container_class'] ); ?> <?php if ( ! $atts['display_comments'] ) : ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
 
-				<?php if ( empty( $_POST['page'] ) ) : ?>
-				<ul id="activity-stream" class="activity-list item-list">
-					<?php endif; ?>
+                <ul id="activity-stream" class="activity-list item-list">
 
 					<?php while ( bp_activities() ) : bp_the_activity(); ?>
 						<?php bp_get_template_part( 'activity/entry' ); ?>
 					<?php endwhile; ?>
 
 					<?php if ( $atts['load_more'] && bp_activity_has_more_items() ) : ?>
-						<li class="load-more">
-							<a href="<?php bp_activity_load_more_link() ?>"><?php _e( 'Load More', 'buddypress' ); ?></a>
-						</li>
+                        <li class="load-more">
+                            <a href="<?php bp_activity_load_more_link() ?>"><?php _e( 'Load More', 'buddypress' ); ?></a>
+                        </li>
 					<?php endif; ?>
-
-					<?php if ( empty( $_POST['page'] ) ) : ?>
-				</ul>
-			<?php endif; ?>
+                </ul>
 
 				<?php if ( $atts['pagination'] && ! $atts['load_more'] ) : ?>
-					<div class="pagination">
-						<div class="pag-count"><?php bp_activity_pagination_count(); ?></div>
-						<div class="pagination-links"><?php bp_activity_pagination_links(); ?></div>
-					</div>
+                    <div class="pagination">
+                        <div class="pag-count"><?php bp_activity_pagination_count(); ?></div>
+                        <div class="pagination-links"><?php bp_activity_pagination_links(); ?></div>
+                    </div>
 				<?php endif; ?>
 
-				<form name="bpas-activities-args">
-					<input type="hidden" name="display_comments" value="<?php echo esc_attr($atts['display_comments']) ?>">
-					<input type="hidden" name="include" value="<?php echo esc_attr($atts['include']) ?>">
-					<input type="hidden" name="exclude" value="<?php echo esc_attr($atts['exclude']) ?>">
-					<input type="hidden" name="in" value="<?php echo esc_attr($atts['in']) ?>">
-					<input type="hidden" name="sort" value="<?php echo esc_attr($atts['sort']) ?>">
-					<input type="hidden" name="page" value="<?php echo esc_attr( $atts['page'] + 1  ) ?>">
-					<input type="hidden" name="per_page" value="<?php echo esc_attr($atts['per_page']) ?>">
-					<input type="hidden" name="max" value="<?php echo esc_attr($atts['max']) ?>">
-					<input type="hidden" name="count_total" value="<?php echo esc_attr($atts['count_total']) ?>">
-					<input type="hidden" name="scope" value="<?php echo esc_attr($atts['scope']) ?>">
+                <form name="bpas-activities-args">
+                    <input type="hidden" name="display_comments"
+                           value="<?php echo esc_attr( $atts['display_comments'] ) ?>">
+                    <input type="hidden" name="include" value="<?php echo esc_attr( $atts['include'] ) ?>">
+                    <input type="hidden" name="exclude" value="<?php echo esc_attr( $atts['exclude'] ) ?>">
+                    <input type="hidden" name="in" value="<?php echo esc_attr( $atts['in'] ) ?>">
+                    <input type="hidden" name="sort" value="<?php echo esc_attr( $atts['sort'] ) ?>">
+                    <input type="hidden" class="bps-input-current-page" name="page"
+                           value="<?php echo esc_attr( $atts['page'] + 1 ) ?>">
+                    <input type="hidden" name="per_page" value="<?php echo esc_attr( $atts['per_page'] ) ?>">
+                    <input type="hidden" name="max" value="<?php echo esc_attr( $atts['max'] ) ?>">
+                    <input type="hidden" name="count_total" value="<?php echo esc_attr( $atts['count_total'] ) ?>">
+                    <input type="hidden" name="scope" value="<?php echo esc_attr( $atts['scope'] ) ?>">
 
-					<input type="hidden" name="user_id" value="<?php echo esc_attr($atts['user_id']) ?>">
-					<input type="hidden" name="object" value="<?php echo esc_attr($atts['object']) ?>">
-					<input type="hidden" name="bpas_action" value="<?php echo esc_attr($atts['action']) ?>">
-					<input type="hidden" name="primary_id" value="<?php echo esc_attr($atts['primary_id']) ?>">
-					<input type="hidden" name="secondary_id" value="<?php echo esc_attr($atts['secondary_id']) ?>">
-					<input type="hidden" name="search_terms" value="<?php echo esc_attr($atts['search_terms']) ?>">
-					<input type="hidden" name="for" value="<?php echo esc_attr($atts['for']) ?>">
-					<input type="hidden" name="role" value="<?php echo esc_attr($atts['role']) ?>">
-					<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'bpas_load_activities' )?>">
-					<!--<input type="hidden" name="action" value="bpas_load_activities">-->
-				</form>
+                    <input type="hidden" name="user_id" value="<?php echo esc_attr( $atts['user_id'] ) ?>">
+                    <input type="hidden" name="object" value="<?php echo esc_attr( $atts['object'] ) ?>">
+                    <input type="hidden" name="bpas_action" value="<?php echo esc_attr( $atts['action'] ) ?>">
+                    <input type="hidden" name="primary_id" value="<?php echo esc_attr( $atts['primary_id'] ) ?>">
+                    <input type="hidden" name="secondary_id" value="<?php echo esc_attr( $atts['secondary_id'] ) ?>">
+                    <input type="hidden" name="search_terms" value="<?php echo esc_attr( $atts['search_terms'] ) ?>">
+                    <input type="hidden" name="for" value="<?php echo esc_attr( $atts['for'] ) ?>">
+                    <input type="hidden" name="role" value="<?php echo esc_attr( $atts['role'] ) ?>">
+                    <input type="hidden" name="_wpnonce"
+                           value="<?php echo wp_create_nonce( 'bpas_load_activities' ) ?>">
+                    <!--<input type="hidden" name="action" value="bpas_load_activities">-->
+                </form>
 
-			</div>
+            </div>
 
-		<?php else : ?>
-			<div id="message" class="info">
-				<p><?php _e( 'Sorry, there was no activity found. Please try a different filter.', 'buddypress' ); ?></p>
-			</div>
-		<?php endif; ?>
+        <?php else : ?>
+            <div id="message" class="info">
+                <p><?php _e( 'Sorry, there was no activity found. Please try a different filter.', 'buddypress' ); ?></p>
+            </div>
+        <?php endif; ?>
 
 		<?php do_action( 'bp_after_activity_loop' ); ?>
 
@@ -293,7 +295,6 @@ class BPAS_ShortCode_Helper {
 		return $user_id;
 	}
 
-
 	/**
 	 * Get user ids belonging to a specific role.
 	 *
@@ -345,7 +346,6 @@ class BPAS_ShortCode_Helper {
 			'user_id' => $user_id,
 		) );
 	}
-
 }
 
 BPAS_ShortCode_Helper::get_instance();

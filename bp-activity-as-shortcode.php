@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: BuddyPress Activity ShortCode
  * Description: Embed activity stream in page/post using shortcode
@@ -18,6 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Helper class.
  */
+
+/**
+ * Class BD_Activity_Stream_Shortcodes_Helper
+ *
+ * @property-read string $url plugin url.
+ * @property-read string $path plugin path.
+ */
 class BD_Activity_Stream_Shortcodes_Helper {
 
 	/**
@@ -28,15 +34,15 @@ class BD_Activity_Stream_Shortcodes_Helper {
 	private static $instance;
 
 	/**
-     * Plugin absolute path
-     *
+	 * Plugin absolute path
+	 *
 	 * @var string
 	 */
 	private $path;
 
 	/**
-     * Plugin directory url
-     *
+	 * Plugin directory url
+	 *
 	 * @var string
 	 */
 	private $url;
@@ -46,10 +52,10 @@ class BD_Activity_Stream_Shortcodes_Helper {
 	 */
 	private function __construct() {
 
-	    $this->path = plugin_dir_path( __FILE__ );
-	    $this->url = plugin_dir_url( __FILE__ );
+		$this->path = plugin_dir_path( __FILE__ );
+		$this->url  = plugin_dir_url( __FILE__ );
 
-	    $this->setup();
+		$this->setup();
 	}
 
 	/**
@@ -67,34 +73,46 @@ class BD_Activity_Stream_Shortcodes_Helper {
 	}
 
 	/**
+	 * Accessor.
+	 *
+	 * @param string $name property name.
+	 *
+	 * @return mixed
+	 */
+	public function __get( $name ) {
+		return isset( $this->{$name} ) ? $this->{$name}: null;
+	}
+
+	/**
 	 *  Callback to buddypress actions
 	 */
 	public function setup() {
-	    add_action( 'bp_loaded', array( $this, 'load' ) );
-	    add_action( 'bp_enqueue_scripts', array( $this, 'load_assets' ) );
-    }
+		add_action( 'bp_loaded', array( $this, 'load' ) );
+		add_action( 'bp_enqueue_scripts', array( $this, 'load_assets' ) );
+	}
 
 	/**
 	 * Load plugin files
 	 */
-    public function load() {
+	public function load() {
 
-	    $files = array(
-	        'core/class-bpas-ajax-handler.php',
-	        'core/class-bpas-shortcode-helper.php',
-        );
+		$files = array(
+			'core/class-bpas-ajax-handler.php',
+			'core/class-bpas-shortcode-helper.php',
+		);
 
-	    foreach ( $files as $file ) {
-	        require_once $this->path . $file;
-        }
-    }
+		foreach ( $files as $file ) {
+			require_once $this->path . $file;
+		}
+	}
 
 	/**
 	 * Load plugin assets
 	 */
-    public function load_assets() {
-	    wp_register_script( 'bpas_js', $this->url . 'assets/js/bpas.js', array( 'jquery' ) );
-	    wp_enqueue_script( 'bpas_js' );
-    }
+	public function load_assets() {
+		wp_register_script( 'bpas-loadmore-js', $this->url . 'assets/js/bpas-loadmore.js', array( 'jquery' ) );
+		wp_enqueue_script( 'bpas-loadmore-js' );
+	}
 }
+
 BD_Activity_Stream_Shortcodes_Helper::get_instance();
