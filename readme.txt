@@ -3,7 +3,7 @@ Contributors: buddydev, sbrajesh, raviousprime
 Tags: buddypress, buddypress activity, sitewide activity, activity shortcode
 Requires at least: 4.0
 Tested up to: 4.9.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 
 BuddyPress Activity shortcode plugin allows you to insert BuddyPress activity stream on any page/post using shortcode.
 
@@ -49,6 +49,10 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
+= Version 1.1.3 =
+ * Added support for load more activities in the current context. Thank you Shay for sponsoring it.
+ * use load_more=1 for showing the load more button.
+
 = Version 1.1.2 =
  * Added support for scope='following' when using BuddyPress follow 1.2.x branch too. Sponsored by Shay.
  * Also, scope='following' can be combined with  for ='logged', or for='displayed' or for='author' to display relevant activities.
