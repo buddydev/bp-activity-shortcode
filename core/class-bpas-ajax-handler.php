@@ -73,6 +73,51 @@ class BPAS_Ajax_Handler {
 			'role'             => '', // use one or more role here(e.g administrator,editor etc).
 		) );
 
+		$activity_for = $args['for'];
+
+		if ( ! empty( $activity_for ) ) {
+			unset( $args['for'] );
+			$args['user_id'] = BPAS_Shortcode_Util::get_user_id_for_context( $activity_for );
+
+			if ( empty( $args['user_id'] ) ) {
+				$args['user_id'] = array(0, 0 ); //invalid.
+			}
+		}
+
+		$user_ids = array();
+		$has_role = false;
+		// Fetch users for role and use their activity.
+		if ( ! empty( $args['role'] ) ) {
+			$has_role = true;
+			$user_ids        = BPAS_Shortcode_Util::get_user_ids_by_roles( $args['role'] );
+			$args['user_id'] = $user_ids;
+		}
+
+		if ( ! empty( $args['scope'] ) && 'following' === $args['scope'] ) {
+			// Compatibility for 1.2.2, Not needed when using the 1.3 branch of bp followers.
+			$user_id = BPAS_Shortcode_Util::get_user_id_for_context( $activity_for );
+			if ( ! $user_id ) {
+				$user_id = get_current_user_id();
+			}
+
+			$following_ids = array();
+
+			if ( $user_id ) {
+				$following_ids = BPAS_Shortcode_Util::get_following_user_ids( $user_id );
+			}
+			// limit to common users.
+			if ( $has_role ) {
+				$following_ids = array_intersect( $user_ids, $following_ids );
+			}
+
+			// if not following anyone, empty/invalid.
+			if ( empty( $following_ids ) ) {
+				$args['user_id'] = array( 0, 0 );// invalid.
+			} else {
+				$args['user_id'] = $following_ids;
+			}
+		}
+
 		if ( ! empty( $_POST['bpas_action'] ) ) {
 			$args['action'] = $_POST['bpas_action'];
 		}
