@@ -21,4 +21,26 @@ jQuery(document).ready(function( $ ){
 
         return false;
     });
+
+    // for group.
+
+
+    $('.bpas-post-form-wrapper').each(function () {
+        var $this = $(this);
+        var $settingsForm = $this.next('.bpas-shortcode-activities').find('form.bpas-activities-args');
+        var object = $settingsForm.find('.bpas_input_object').val();
+        var primary_id = $settingsForm.find('.bpas_input_primary_id').val();
+
+        if ('groups' === object && parseInt(primary_id) > 0) {
+            // we are overriding to make sure user can post to hidden groups too if the admin allows.
+            // select box only allows valid options as selected value.
+            var $postIn = $this.find('#whats-new-post-in');
+            $postIn.empty();
+            $postIn.html("<option value='" + primary_id + "'>" + primary_id + "</option>");//make sure it is alaways valid.
+            $postIn.val(primary_id);
+            $this.find('#whats-new-post-in-box').hide();
+        }
+
+    });
+
 });
