@@ -123,34 +123,45 @@ class BPAS_ShortCode_Helper {
 
 		if ( ! empty( $activity_for ) ) {
 			unset( $atts['for'] );
-			$atts['user_id'] = $this->get_user_id_for_context( $activity_for );
+			$atts['user_id'] =BPAS_Shortcode_Util::get_user_id_for_context( $activity_for );
 
 			if ( empty( $atts['user_id'] ) ) {
 				return '';
 			}
 		}
 
+		$user_ids = array();
+		$has_role = false;
 		// Fetch users for role and use their activity.
 		if ( ! empty( $atts['role'] ) ) {
-			$user_ids        = $this->get_user_ids_by_roles( $atts['role'] );
+		    $has_role = true;
+			$user_ids        = BPAS_Shortcode_Util::get_user_ids_by_roles( $atts['role'] );
 			$atts['user_id'] = $user_ids;
-		} elseif ( ! empty( $atts['scope'] ) && 'following' === $atts['scope'] ) {
+		}
+
+		if ( ! empty( $atts['scope'] ) && 'following' === $atts['scope'] ) {
 			// Compatibility for 1.2.2, Not needed when using the 1.3 branch of bp followers.
-			$user_id = $this->get_user_id_for_context( $activity_for );
+			$user_id = BPAS_Shortcode_Util::get_user_id_for_context( $activity_for );
 			if ( ! $user_id ) {
 				$user_id = get_current_user_id();
 			}
 
-			$user_ids = array();
+			$following_ids = array();
 
 			if ( $user_id ) {
-				$user_ids = $this->get_following_user_ids( $user_id );
+				$following_ids = BPAS_Shortcode_Util::get_following_user_ids( $user_id );
+			}
+			// limit to common users.
+			if ( $has_role ) {
+				$following_ids = array_intersect( $user_ids, $following_ids );
 			}
 
-			if ( empty( $user_ids ) ) {
-				$user_ids = array( 0, 0 );// invalid.
+			// if not following anyone, empty/invalid.
+			if ( empty( $following_ids ) ) {
+				$atts['user_id'] = array( 0, 0 );// invalid.
+			} else {
+				$atts['user_id'] = $following_ids;
 			}
-			$atts['user_id'] = $user_ids;
 		}
 
 		$this->doing_shortcode = true;
@@ -170,7 +181,9 @@ class BPAS_ShortCode_Helper {
 		<?php do_action( 'bp_before_activity_loop' ); ?>
 
 		<?php if ( $atts['allow_posting'] && is_user_logged_in() ) : ?>
-			<?php bp_locate_template( array( 'activity/post-form.php' ), true ); ?>
+        <div class="bpas-post-form-wrapper">
+	        <?php bp_locate_template( array( 'activity/post-form.php' ), true ); ?>
+        </div>
 		<?php endif; ?>
 
 		<?php if ( bp_has_activities( $atts ) ) : ?>
@@ -197,30 +210,27 @@ class BPAS_ShortCode_Helper {
                     </div>
 				<?php endif; ?>
 
-                <form name="bpas-activities-args">
-                    <input type="hidden" name="display_comments"
-                           value="<?php echo esc_attr( $atts['display_comments'] ) ?>">
-                    <input type="hidden" name="include" value="<?php echo esc_attr( $atts['include'] ) ?>">
-                    <input type="hidden" name="exclude" value="<?php echo esc_attr( $atts['exclude'] ) ?>">
-                    <input type="hidden" name="in" value="<?php echo esc_attr( $atts['in'] ) ?>">
-                    <input type="hidden" name="sort" value="<?php echo esc_attr( $atts['sort'] ) ?>">
-                    <input type="hidden" class="bps-input-current-page" name="page"
-                           value="<?php echo esc_attr( $atts['page'] + 1 ) ?>">
-                    <input type="hidden" name="per_page" value="<?php echo esc_attr( $atts['per_page'] ) ?>">
-                    <input type="hidden" name="max" value="<?php echo esc_attr( $atts['max'] ) ?>">
-                    <input type="hidden" name="count_total" value="<?php echo esc_attr( $atts['count_total'] ) ?>">
-                    <input type="hidden" name="scope" value="<?php echo esc_attr( $atts['scope'] ) ?>">
+                <form name="bpas-activities-args" class="bpas-activities-args">
+                    <input type="hidden"  class="bpas_input_display_comments" name="display_comments" value="<?php echo esc_attr( $atts['display_comments'] ) ?>">
+                    <input type="hidden" class="bpas_input_include" name="include" value="<?php echo esc_attr( $atts['include'] ) ?>">
+                    <input type="hidden" class="bpas_input_exclude" name="exclude" value="<?php echo esc_attr( $atts['exclude'] ) ?>">
+                    <input type="hidden" class="bpas_input_int" name="in" value="<?php echo esc_attr( $atts['in'] ) ?>">
+                    <input type="hidden" class="bpas_input_sort" name="sort" value="<?php echo esc_attr( $atts['sort'] ) ?>">
+                    <input type="hidden" class="bpas_input_page bps-input-current-page" name="page" value="<?php echo esc_attr( $atts['page'] + 1 ) ?>">
+                    <input type="hidden" class="bpas_input_per_page" name="per_page" value="<?php echo esc_attr( $atts['per_page'] ) ?>">
+                    <input type="hidden" class="bpas_input_max" name="max" value="<?php echo esc_attr( $atts['max'] ) ?>">
+                    <input type="hidden" class="bpas_input_count_total" name="count_total" value="<?php echo esc_attr( $atts['count_total'] ) ?>">
+                    <input type="hidden" class="bpas_input_scope" name="scope" value="<?php echo esc_attr( $atts['scope'] ) ?>">
 
-                    <input type="hidden" name="user_id" value="<?php echo esc_attr( $atts['user_id'] ) ?>">
-                    <input type="hidden" name="object" value="<?php echo esc_attr( $atts['object'] ) ?>">
-                    <input type="hidden" name="bpas_action" value="<?php echo esc_attr( $atts['action'] ) ?>">
-                    <input type="hidden" name="primary_id" value="<?php echo esc_attr( $atts['primary_id'] ) ?>">
-                    <input type="hidden" name="secondary_id" value="<?php echo esc_attr( $atts['secondary_id'] ) ?>">
-                    <input type="hidden" name="search_terms" value="<?php echo esc_attr( $atts['search_terms'] ) ?>">
-                    <input type="hidden" name="for" value="<?php echo esc_attr( $atts['for'] ) ?>">
-                    <input type="hidden" name="role" value="<?php echo esc_attr( $atts['role'] ) ?>">
-                    <input type="hidden" name="_wpnonce"
-                           value="<?php echo wp_create_nonce( 'bpas_load_activities' ) ?>">
+                    <input type="hidden" class="bpas_input_user_id" name="user_id" value="<?php echo esc_attr( $atts['user_id'] ) ?>">
+                    <input type="hidden" class="bpas_input_object" name="object" value="<?php echo esc_attr( $atts['object'] ) ?>">
+                    <input type="hidden" class="bpas_input_bpas_action" name="bpas_action" value="<?php echo esc_attr( $atts['action'] ) ?>">
+                    <input type="hidden" class="bpas_input_primary_id" name="primary_id" value="<?php echo esc_attr( $atts['primary_id'] ) ?>">
+                    <input type="hidden" class="bpas_input_secondary_id" name="secondary_id" value="<?php echo esc_attr( $atts['secondary_id'] ) ?>">
+                    <input type="hidden" class="bpas_input_search_terms" name="search_terms" value="<?php echo esc_attr( $atts['search_terms'] ) ?>">
+                    <input type="hidden" class="bpas_input_for" name="for" value="<?php echo esc_attr( $activity_for ) ?>">
+                    <input type="hidden" class="bpas_input_role" name="role" value="<?php echo esc_attr( $atts['role'] ) ?>">
+                    <input type="hidden" class="bpas_input_wpnonce" name="_wpnonce" value="<?php echo wp_create_nonce( 'bpas_load_activities' ) ?>">
                     <!--<input type="hidden" name="action" value="bpas_load_activities">-->
                 </form>
 
@@ -259,92 +269,6 @@ class BPAS_ShortCode_Helper {
 	 */
 	public function doing_shortcode() {
 		return $this->doing_shortcode;
-	}
-
-	/**
-	 * Get the user id for the givn context.
-	 *
-	 * @param string $context 'logged', 'displayed', 'author'.
-	 *
-	 * @return string
-	 */
-	private function get_user_id_for_context( $context ) {
-
-
-		$user_id = false;
-		switch ( $context ) {
-
-			case 'logged':
-				$user_id = bp_loggedin_user_id();
-				break;
-
-			case 'displayed':
-				$user_id = bp_displayed_user_id();
-				break;
-
-			case 'author':
-				if ( is_singular() || in_the_loop() ) {
-					$user_id = get_the_author_meta( 'ID' );
-				} elseif ( is_author() ) {
-					$user_id = get_queried_object_id();
-				}
-
-				break;
-		}
-
-		return $user_id;
-	}
-
-	/**
-	 * Get user ids belonging to a specific role.
-	 *
-	 * @param string|array $roles list of roles.
-	 *
-	 * @return array
-	 */
-	private function get_user_ids_by_roles( $roles ) {
-
-		$invalid_ids = array( 0, 0 );
-		if ( empty( $roles ) ) {
-			return $invalid_ids;// invalid ids.
-		}
-
-		if ( ! is_array( $roles ) ) {
-			$roles = explode( ',', $roles );
-		}
-
-		// trim space etc.
-		$roles = array_map( 'trim', $roles );
-
-		$user_query = new WP_User_Query( array(
-			'role__in' => $roles,
-			'fields'   => 'ID',
-		) );
-
-		$ids = $user_query->get_results();
-
-		if ( empty( $ids ) ) {
-			$ids = $invalid_ids;
-		}
-
-		return $ids;
-	}
-
-	/**
-	 * Get the ids of user followed by the $user_id.
-	 *
-	 * @param int $user_id user id.
-	 *
-	 * @return array
-	 */
-	private function get_following_user_ids( $user_id ) {
-		if ( ! function_exists( 'bp_follow_get_following' ) ) {
-			return array();
-		}
-
-		return bp_follow_get_following( array(
-			'user_id' => $user_id,
-		) );
 	}
 }
 

@@ -97,6 +97,7 @@ class BD_Activity_Stream_Shortcodes_Helper {
 	public function load() {
 
 		$files = array(
+			'core/class-bpas-shortcode-util.php',
 			'core/class-bpas-ajax-handler.php',
 			'core/class-bpas-shortcode-helper.php',
 		);
