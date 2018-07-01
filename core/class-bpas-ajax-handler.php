@@ -71,6 +71,7 @@ class BPAS_Ajax_Handler {
 			'hide_on_activity' => 1,// hide on user and group activity pages.
 			'for'              => '', // 'logged','displayed','author'.
 			'role'             => '', // use one or more role here(e.g administrator,editor etc).
+            'for_group'        => '', // Not using 'group' as bp may use it in future.
 		) );
 
 		$activity_for = $args['for'];
@@ -83,6 +84,7 @@ class BPAS_Ajax_Handler {
 				$args['user_id'] = array(0, 0 ); //invalid.
 			}
 		}
+
 
 		$user_ids = array();
 		$has_role = false;
@@ -118,7 +120,16 @@ class BPAS_Ajax_Handler {
 			}
 		}
 
-		if ( ! empty( $_POST['bpas_action'] ) ) {
+		$for_group = $args['for_group'];
+		if ( 'groups' === $args['object'] && ! empty( $for_group ) && bp_is_active( 'groups' ) ) {
+			$args['primary_id'] = BP_Groups_Group::get_id_from_slug( $for_group );
+
+			if ( empty( $args['primary_id'] ) ) {
+				$args['user_id'] = array( 0, 0 );// no result.
+			}
+		}
+
+			if ( ! empty( $_POST['bpas_action'] ) ) {
 			$args['action'] = $_POST['bpas_action'];
 		}
 

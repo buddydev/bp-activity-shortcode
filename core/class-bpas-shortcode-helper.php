@@ -107,6 +107,7 @@ class BPAS_ShortCode_Helper {
 			'hide_on_activity' => 1,// hide on user and group activity pages.
 			'for'              => '', // 'logged','displayed','author'.
 			'role'             => '', // use one or more role here(e.g administrator,editor etc).
+            'for_group'        => '',// group slug.
 		), $atts );
 
 		// hide on user activity, activity directory and group activity.
@@ -164,10 +165,25 @@ class BPAS_ShortCode_Helper {
 			}
 		}
 
+		$for_group = $atts['for_group'];
+		if ( 'groups' === $atts['object'] && ! empty( $for_group ) && bp_is_active( 'groups' ) ) {
+			unset( $atts['for_group'] );
+			$atts['primary_id'] = BP_Groups_Group::get_id_from_slug( $for_group );
+
+			if ( empty( $atts['primary_id'] ) ) {
+				$atts['user_id'] = array( 0, 0 );// no result.
+			}
+		}
+
+
 		$this->doing_shortcode = true;
+		$is_nouveau = function_exists( 'bp_nouveau' );
+
+
 		// start buffering.
 		ob_start();
 		do_action( 'bp_activity_stream_shortcode_before_generate_content', $atts );
+
 		?>
 
 		<?php if ( $atts['use_compat'] ) : ?>
@@ -183,6 +199,7 @@ class BPAS_ShortCode_Helper {
 		<?php if ( $atts['allow_posting'] && is_user_logged_in() ) : ?>
         <div class="bpas-post-form-wrapper">
 	        <?php bp_locate_template( array( 'activity/post-form.php' ), true ); ?>
+
         </div>
 		<?php endif; ?>
 
@@ -190,7 +207,7 @@ class BPAS_ShortCode_Helper {
 
             <div class="bpas-shortcode-activities <?php echo esc_attr( $atts['container_class'] ); ?> <?php if ( ! $atts['display_comments'] ) : ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
 
-                <ul id="activity-stream" class="activity-list item-list">
+                <ul id="activity-stream" class="activity-list item-list <?php echo  $is_nouveau ? 'bp-list': '';?> ">
 
 					<?php while ( bp_activities() ) : bp_the_activity(); ?>
 						<?php bp_get_template_part( 'activity/entry' ); ?>
@@ -230,6 +247,7 @@ class BPAS_ShortCode_Helper {
                     <input type="hidden" class="bpas_input_search_terms" name="search_terms" value="<?php echo esc_attr( $atts['search_terms'] ) ?>">
                     <input type="hidden" class="bpas_input_for" name="for" value="<?php echo esc_attr( $activity_for ) ?>">
                     <input type="hidden" class="bpas_input_role" name="role" value="<?php echo esc_attr( $atts['role'] ) ?>">
+                    <input type="hidden" class="bpas_input_for_group" name="for_group" value="<?php echo esc_attr( $for_group ); ?>">
                     <input type="hidden" class="bpas_input_wpnonce" name="_wpnonce" value="<?php echo wp_create_nonce( 'bpas_load_activities' ) ?>">
                     <!--<input type="hidden" name="action" value="bpas_load_activities">-->
                 </form>
