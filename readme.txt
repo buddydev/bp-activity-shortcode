@@ -3,7 +3,7 @@ Contributors: buddydev, sbrajesh, raviousprime
 Tags: buddypress, buddypress activity, sitewide activity, activity shortcode
 Requires at least: 4.0
 Tested up to: 4.9.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 
 BuddyPress Activity shortcode plugin allows you to insert BuddyPress activity stream on any page/post using shortcode.
 
@@ -42,6 +42,10 @@ The plugin is simple to install:
 
 Otherwise, Use the Plugin browser, upload it and activate, you are done.
 
+*This plugin, specially the posting functionality, is not compatible with BP Nouveau.
+ I have checked and it seems we won't be able to support posting in the Nouveau template.
+ Listing will work with minor regression.*
+
 == Frequently Asked Questions ==
 
 = How to Use =
@@ -49,6 +53,12 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
+
+= Version 1.1.4 =
+ * if object=groups allow_posting=1 and primary id is given, do not show dropdown in activity post form.
+ * Introduce for_group=group-slug shortcode option. Object must be specified as 'groups'.
+ * The follow scope now respects role.
+
 = Version 1.1.3 =
  * Added support for load more activities in the current context. Thank you Shay for sponsoring it.
  * use load_more=1 for showing the load more button.
