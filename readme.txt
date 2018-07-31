@@ -53,7 +53,7 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
-= Version 1.1.4 =
+= Version 1.1.5 =
  * Fix Pagination/Load more
  * Fix posting to group when there are no activities.
 
