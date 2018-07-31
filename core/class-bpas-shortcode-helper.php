@@ -227,31 +227,6 @@ class BPAS_ShortCode_Helper {
                     </div>
 				<?php endif; ?>
 
-                <form name="bpas-activities-args" class="bpas-activities-args">
-                    <input type="hidden"  class="bpas_input_display_comments" name="display_comments" value="<?php echo esc_attr( $atts['display_comments'] ) ?>">
-                    <input type="hidden" class="bpas_input_include" name="include" value="<?php echo esc_attr( $atts['include'] ) ?>">
-                    <input type="hidden" class="bpas_input_exclude" name="exclude" value="<?php echo esc_attr( $atts['exclude'] ) ?>">
-                    <input type="hidden" class="bpas_input_int" name="in" value="<?php echo esc_attr( $atts['in'] ) ?>">
-                    <input type="hidden" class="bpas_input_sort" name="sort" value="<?php echo esc_attr( $atts['sort'] ) ?>">
-                    <input type="hidden" class="bpas_input_page bps-input-current-page" name="page" value="<?php echo esc_attr( $atts['page'] + 1 ) ?>">
-                    <input type="hidden" class="bpas_input_per_page" name="per_page" value="<?php echo esc_attr( $atts['per_page'] ) ?>">
-                    <input type="hidden" class="bpas_input_max" name="max" value="<?php echo esc_attr( $atts['max'] ) ?>">
-                    <input type="hidden" class="bpas_input_count_total" name="count_total" value="<?php echo esc_attr( $atts['count_total'] ) ?>">
-                    <input type="hidden" class="bpas_input_scope" name="scope" value="<?php echo esc_attr( $atts['scope'] ) ?>">
-
-                    <input type="hidden" class="bpas_input_user_id" name="user_id" value="<?php echo esc_attr( $atts['user_id'] ) ?>">
-                    <input type="hidden" class="bpas_input_object" name="object" value="<?php echo esc_attr( $atts['object'] ) ?>">
-                    <input type="hidden" class="bpas_input_bpas_action" name="bpas_action" value="<?php echo esc_attr( $atts['action'] ) ?>">
-                    <input type="hidden" class="bpas_input_primary_id" name="primary_id" value="<?php echo esc_attr( $atts['primary_id'] ) ?>">
-                    <input type="hidden" class="bpas_input_secondary_id" name="secondary_id" value="<?php echo esc_attr( $atts['secondary_id'] ) ?>">
-                    <input type="hidden" class="bpas_input_search_terms" name="search_terms" value="<?php echo esc_attr( $atts['search_terms'] ) ?>">
-                    <input type="hidden" class="bpas_input_for" name="for" value="<?php echo esc_attr( $activity_for ) ?>">
-                    <input type="hidden" class="bpas_input_role" name="role" value="<?php echo esc_attr( $atts['role'] ) ?>">
-                    <input type="hidden" class="bpas_input_for_group" name="for_group" value="<?php echo esc_attr( $for_group ); ?>">
-                    <input type="hidden" class="bpas_input_wpnonce" name="_wpnonce" value="<?php echo wp_create_nonce( 'bpas_load_activities' ) ?>">
-                    <!--<input type="hidden" name="action" value="bpas_load_activities">-->
-                </form>
-
             </div>
 
         <?php else : ?>
@@ -261,6 +236,30 @@ class BPAS_ShortCode_Helper {
         <?php endif; ?>
 
 		<?php do_action( 'bp_after_activity_loop' ); ?>
+        <form name="bpas-activities-args" class="bpas-activities-args">
+            <input type="hidden"  class="bpas_input_display_comments" name="display_comments" value="<?php echo esc_attr( $atts['display_comments'] ) ?>">
+            <input type="hidden" class="bpas_input_include" name="include" value="<?php echo esc_attr( $atts['include'] ) ?>">
+            <input type="hidden" class="bpas_input_exclude" name="exclude" value="<?php echo esc_attr( $atts['exclude'] ) ?>">
+            <input type="hidden" class="bpas_input_int" name="in" value="<?php echo esc_attr( $atts['in'] ) ?>">
+            <input type="hidden" class="bpas_input_sort" name="sort" value="<?php echo esc_attr( $atts['sort'] ) ?>">
+            <input type="hidden" class="bpas_input_page bps-input-current-page" name="page" value="<?php echo esc_attr( $atts['page'] + 1 ) ?>">
+            <input type="hidden" class="bpas_input_per_page" name="per_page" value="<?php echo esc_attr( $atts['per_page'] ) ?>">
+            <input type="hidden" class="bpas_input_max" name="max" value="<?php echo esc_attr( $atts['max'] ) ?>">
+            <input type="hidden" class="bpas_input_count_total" name="count_total" value="<?php echo esc_attr( $atts['count_total'] ) ?>">
+            <input type="hidden" class="bpas_input_scope" name="scope" value="<?php echo esc_attr( $atts['scope'] ) ?>">
+
+            <input type="hidden" class="bpas_input_user_id" name="user_id" value="<?php echo esc_attr( $atts['user_id'] ) ?>">
+            <input type="hidden" class="bpas_input_object" name="object" value="<?php echo esc_attr( $atts['object'] ) ?>">
+            <input type="hidden" class="bpas_input_bpas_action" name="bpas_action" value="<?php echo esc_attr( $atts['action'] ) ?>">
+            <input type="hidden" class="bpas_input_primary_id" name="primary_id" value="<?php echo esc_attr( $atts['primary_id'] ) ?>">
+            <input type="hidden" class="bpas_input_secondary_id" name="secondary_id" value="<?php echo esc_attr( $atts['secondary_id'] ) ?>">
+            <input type="hidden" class="bpas_input_search_terms" name="search_terms" value="<?php echo esc_attr( $atts['search_terms'] ) ?>">
+            <input type="hidden" class="bpas_input_for" name="for" value="<?php echo esc_attr( $activity_for ) ?>">
+            <input type="hidden" class="bpas_input_role" name="role" value="<?php echo esc_attr( $atts['role'] ) ?>">
+            <input type="hidden" class="bpas_input_for_group" name="for_group" value="<?php echo esc_attr( $for_group ); ?>">
+            <input type="hidden" class="bpas_input_wpnonce" name="_wpnonce" value="<?php echo wp_create_nonce( 'bpas_load_activities' ) ?>">
+            <!--<input type="hidden" name="action" value="bpas_load_activities">-->
+        </form>
 
 		<form action="" name="activity-loop-form" id="activity-loop-form" method="post">
 			<?php wp_nonce_field( 'activity_filter', '_wpnonce_activity_filter' ); ?>

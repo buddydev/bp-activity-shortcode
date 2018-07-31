@@ -5,15 +5,15 @@ jQuery(document).ready(function( $ ){
     jQuery('div.bpas-shortcode-activities').on('click', 'li.load-more', function() {
 
         var $this = $(this);
-        var $form = $this.parent().parent().find('form[name="bpas-activities-args"]');
-
+        var $form = $this.parents('div.bpas-shortcode-activities').nextAll('form.bpas-activities-args');
         var data = $form.serialize();
         data += '&action=bpas_load_activities';
-        var page = $form.find('bps-input-current-page').val();
+        console.log(data);
+        var page = $form.find('.bps-input-current-page').val();
         $.post( ajaxurl, data, function(resp){
             if (resp.success ) {
                 page++;
-                $form.find('bps-input-current-page').val(page);
+                $form.find('.bps-input-current-page').val(page);
                 $this.hide();//prevAll('li').remove();
                 $this.parents('ul.activity-list').append(resp.data);//.insertBefore( $this );
             }
@@ -27,10 +27,11 @@ jQuery(document).ready(function( $ ){
 
     $('.bpas-post-form-wrapper').each(function () {
         var $this = $(this);
-        var $settingsForm = $this.next('.bpas-shortcode-activities').find('form.bpas-activities-args');
+        var $settingsForm =$this.nextAll('form.bpas-activities-args');
+
         var object = $settingsForm.find('.bpas_input_object').val();
         var primary_id = $settingsForm.find('.bpas_input_primary_id').val();
-
+        console.log(object);
         if ('groups' === object && parseInt(primary_id) > 0) {
             // we are overriding to make sure user can post to hidden groups too if the admin allows.
             // select box only allows valid options as selected value.
