@@ -175,15 +175,15 @@ class BPAS_ShortCode_Helper {
 			}
 		}
 
-
 		$this->doing_shortcode = true;
 		$is_nouveau = function_exists( 'bp_nouveau' );
-
 
 		// start buffering.
 		ob_start();
 		do_action( 'bp_activity_stream_shortcode_before_generate_content', $atts );
 
+		$activity_list_classes = "activity-list item-list " . $is_nouveau ? 'bp-list' : '';
+		$activity_list_classes = apply_filters( 'bpas_activity_list_classes', $activity_list_classes )
 		?>
 
 		<?php if ( $atts['use_compat'] ) : ?>
@@ -207,7 +207,7 @@ class BPAS_ShortCode_Helper {
 
             <div class="bpas-shortcode-activities <?php echo esc_attr( $atts['container_class'] ); ?> <?php if ( ! $atts['display_comments'] ) : ?> hide-activity-comments<?php endif; ?> shortcode-activity-stream">
 
-                <ul id="activity-stream" class="activity-list item-list <?php echo  $is_nouveau ? 'bp-list': '';?> ">
+                <ul id="activity-stream" class="<?php echo esc_attr( $activity_list_classes ); ?> ">
 
 					<?php while ( bp_activities() ) : bp_the_activity(); ?>
 						<?php bp_get_template_part( 'activity/entry' ); ?>
