@@ -182,7 +182,12 @@ class BPAS_ShortCode_Helper {
 		ob_start();
 		do_action( 'bp_activity_stream_shortcode_before_generate_content', $atts );
 
-		$activity_list_classes = "activity-list item-list " . $is_nouveau ? 'bp-list' : '';
+		$activity_list_classes = 'activity-list item-list ';
+
+		if ( $is_nouveau ) {
+			$activity_list_classes .= ' bp-list';
+		}
+
 		$activity_list_classes = apply_filters( 'bpas_activity_list_classes', $activity_list_classes )
 		?>
 
