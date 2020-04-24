@@ -3,7 +3,7 @@ Contributors: buddydev, sbrajesh, raviousprime
 Tags: buddypress, buddypress activity, sitewide activity, activity shortcode
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 
 BuddyPress Activity shortcode plugin allows you to insert BuddyPress activity stream on any page/post using shortcode.
 
@@ -53,7 +53,10 @@ Add the shortcode [activity-stream ] in your post or page. For detailed usage in
 
 
 == Changelog ==
-= Version 1.1.5 =
+= Version 1.1.7 =
+ * Fix css class filter
+
+= Version 1.1.6 =
  * Added filter for activity css classes
  * Tested with WordPress 5.4
 
