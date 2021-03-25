@@ -178,6 +178,10 @@ class BPAS_ShortCode_Helper {
 		$this->doing_shortcode = true;
 		$is_nouveau = function_exists( 'bp_nouveau' );
 
+		if ( 'groups' === $atts['object'] && ! empty( $atts['primary_id'] ) && is_user_logged_in() ) {
+			$atts['show_hidden'] = groups_is_user_member( bp_loggedin_user_id(), $atts['primary_id'] );
+		}
+
 		// start buffering.
 		ob_start();
 		do_action( 'bp_activity_stream_shortcode_before_generate_content', $atts );
