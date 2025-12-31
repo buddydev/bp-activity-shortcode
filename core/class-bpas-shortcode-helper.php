@@ -200,7 +200,7 @@ class BPAS_ShortCode_Helper {
 		<?php endif; ?>
 
 		<?php if ( $atts['title'] ) : ?>
-			<h3 class="activity-shortcode-title"><?php echo $atts['title']; ?></h3>
+			<h3 class="activity-shortcode-title"><?php echo esc_html( $atts['title'] ); ?></h3>
 		<?php endif; ?>
 
 		<?php do_action( 'bp_before_activity_loop' ); ?>
