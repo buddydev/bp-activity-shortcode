@@ -5,7 +5,7 @@
  * Author: BuddyDev
  * Plugin URI: https://buddydev.com/plugins/bp-activity-shortcode/
  * Author URI: https://buddydev.com/
- * Version: 1.1.8
+ * Version: 1.1.9
  * License: GPL
  */
 
