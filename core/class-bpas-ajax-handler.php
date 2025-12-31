@@ -45,7 +45,7 @@ class BPAS_Ajax_Handler {
 		// we do not allow tinkering with hide_sitewide while loading via ajax.
 		unset( $_POST['hide_sitewide'] );
 
-		$args = wp_parse_args( $_POST, array(
+		$args = wp_parse_args( wp_unslash( $_POST ), array(
 			'display_comments' => 'threaded',
 			'include'          => false,     // pass an activity_id or string of IDs comma-separated
 			'exclude'          => false,     // pass an activity_id or string of IDs comma-separated
